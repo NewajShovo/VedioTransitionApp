@@ -54,26 +54,60 @@ AVAsset *resultAsset1;
     
     
     
-    
+    //getting a maincomposition where we will keep the asset.
     AVMutableComposition *mainComposition = [[AVMutableComposition alloc] init];
+    //Finding out video track
     AVMutableCompositionTrack *compositionVideoTrack = [mainComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-    
-
     CMTime insertTime=kCMTimeZero;
-    [compositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, resultAsset1.duration) ofTrack:[[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:insertTime error:nil];
-//    insertTime=CMTimeMakeWithSeconds(CMTimeGetSeconds(insertTime) + 10, NSEC_PER_SEC);
-    insertTime = CMTimeAdd(insertTime, resultAsset2.duration);
-    [compositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, resultAsset2.duration) ofTrack:[[resultAsset2 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] atTime:insertTime error:nil];
+    
+    //Assigning assets to the video track
+    [compositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, resultAsset1.duration) ofTrack:[[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] lastObject] atTime:insertTime error:nil];
+    insertTime =resultAsset1.duration;
+    [compositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, resultAsset2.duration) ofTrack:[[resultAsset2 tracksWithMediaType:AVMediaTypeVideo] lastObject] atTime:insertTime error:nil];
+    
+   
+//    videoComp.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
+    CGSize videoSize = [compositionVideoTrack naturalSize];
+
+    
+    //Creating a video composition
+    AVMutableVideoComposition* videoComp = [AVMutableVideoComposition videoComposition];
+    videoComp.renderSize = [compositionVideoTrack   naturalSize];
+    videoComp.frameDuration = CMTimeMake(1, 30);
+    
+    
+    
+    
+    //Creating vidoecomposition instruction
+    AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    instruction.timeRange = CMTimeRangeMake(kCMTimeZero, mainComposition.duration);
+    
+    //creating videocomposition layer instruction
+    AVMutableVideoCompositionLayerInstruction *ainstruction = [ AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:compositionVideoTrack];
+    [ainstruction setOpacityRampFromStartOpacity:0 toEndOpacity:1 timeRange:CMTimeRangeMake(insertTime, CMTimeMakeWithSeconds(3,1))];
+    [ainstruction setCropRectangleRampFromStartCropRectangle:CGRectZero toEndCropRectangle:CGRectMake(0, 0,videoSize.width, videoSize.height) timeRange:CMTimeRangeMake(insertTime, CMTimeMakeWithSeconds(3,1))];
+   
+    //assigning layer instructions to the instruction
+    instruction.layerInstructions = [ NSArray arrayWithObject:ainstruction ];
+    
+    
+    //finally videocomposition instruction is added to video composition
+    videoComp.instructions = [ NSArray arrayWithObject:instruction];
+    
     
     AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:mainComposition presetName:AVAssetExportPresetHighestQuality];
     
     NSURL *outputVideoURL=dataFilePath(@"tmpPost.mp4"); //url of exportedVideo
     
+    //that videocomposition is added to exported video composition
+    
+    exportSession.videoComposition = videoComp;
     exportSession.outputURL = outputVideoURL;
     
     exportSession.shouldOptimizeForNetworkUse = YES;
     
     exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    
     
     /**
      
