@@ -111,7 +111,7 @@ int cnt=0;
     
         ShowImageVC *vc1 = (ShowImageVC *)[self.storyboard instantiateViewControllerWithIdentifier:@"showImageVC"];
         //    PlayerDisplayVCViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"PlayerDisplayVCViewController"];
-        vc1.asset =tmpasset;
+        vc1.assets =tmpasset;
        [self. navigationController pushViewController:vc1 animated:YES];
     }
    else if(_selectedAssets.count==2)
@@ -119,8 +119,9 @@ int cnt=0;
     
        
        showVideoVC *vc2 = (showVideoVC *) [self.storyboard instantiateViewControllerWithIdentifier:@"showVideoVC"];
-       vc2.asset1 = [_selectedAssets objectAtIndex:0];
-       vc2.asset2 = [ _selectedAssets objectAtIndex:1];
+       vc2.PhAssets=[[NSMutableArray alloc]init];
+       [vc2.PhAssets addObject:[_selectedAssets objectAtIndex:0]];
+       [vc2.PhAssets addObject:[_selectedAssets objectAtIndex:1]];
        [_selectedAssets removeAllObjects];
        [ self.navigationController pushViewController:vc2 animated:YES];
    }

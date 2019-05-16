@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ShowImageVC : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *ImageView;
 @property (weak, nonatomic) IBOutlet UIImage *img;
-@property (weak, nonatomic) IBOutlet PHAsset *asset;
+@property (weak, nonatomic) IBOutlet PHAsset *assets;
 @end
 
 NS_ASSUME_NONNULL_END

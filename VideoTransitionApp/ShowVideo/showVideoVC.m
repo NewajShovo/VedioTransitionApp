@@ -30,108 +30,158 @@ AVAsset *resultAsset1;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    dispatch_semaphore_t    semaphore = dispatch_semaphore_create(0);
-    
-    PHVideoRequestOptions *option = [PHVideoRequestOptions new];
-    
-    [[PHImageManager defaultManager] requestAVAssetForVideo:self.asset1 options:option resultHandler:^(AVAsset * avasset, AVAudioMix * audioMix, NSDictionary * info) {
-        resultAsset1 = avasset;
-        dispatch_semaphore_signal(semaphore);
-    }];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    
+//    dispatch_semaphore_t    semaphore = dispatch_semaphore_create(0);
+//
+//    PHVideoRequestOptions *option = [PHVideoRequestOptions new];
+//
+//    [[PHImageManager defaultManager] requestAVAssetForVideo:self.asset1 options:option resultHandler:^(AVAsset * avasset, AVAudioMix * audioMix, NSDictionary * info) {
+//        resultAsset1 = avasset;
+//        dispatch_semaphore_signal(semaphore);
+//    }];
+//    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+//
+//
+//     dispatch_semaphore_t    semaphore1 = dispatch_semaphore_create(0);
+//
+//
+//    [[PHImageManager defaultManager] requestAVAssetForVideo:self.asset2 options:option resultHandler:^(AVAsset * avasset, AVAudioMix * audioMix, NSDictionary * info) {
+//        resultAsset2 = avasset;
+//        dispatch_semaphore_signal(semaphore1);
+//    }];
+//   dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
+//
+//
+//
+//    // New code for merging two video's with different orientation;
+//
+//    AVMutableComposition *composition = [AVMutableComposition composition];
+//    AVMutableCompositionTrack *compositionVideoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+//    AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
+//    videoComposition.frameDuration = CMTimeMake(1,30);
+//    videoComposition.renderScale = 1.0;
+//    videoComposition.renderSize = CGSizeMake(_playerView.frame.size.width, _playerView.frame.size.height);
+//    AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+//    AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:compositionVideoTrack];
+//
+//
+//
+//
+//    float time = 0;
+//
+//
+//
+//
+//    AVAssetTrack *sourceVideoTrack = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+//    CGSize temp = CGSizeApplyAffineTransform(sourceVideoTrack.naturalSize, sourceVideoTrack.preferredTransform);
+//    CGSize size = CGSizeMake(fabs(temp.width), fabs(temp.height));
+//    NSLog(@"---%f-----%f---",size.width,size.height);
+//
+//
+//        CGAffineTransform transform = resultAsset1.preferredTransform;
+//
+//
+//        float s = videoComposition.renderSize.width/size.width;
+//        CGAffineTransform new = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(s,s));
+//
+//
+//        double val = (size.height*videoComposition.renderSize.width)/size.width;
+//        val = (videoComposition.renderSize.height-val)/2;
+//        CGAffineTransform newer = CGAffineTransformConcat(new, CGAffineTransformMakeTranslation(0,val));
+//
+//
+//
+//
+//        [layerInstruction setTransform:newer atTime:CMTimeMakeWithSeconds(time, 30)];
+//        [compositionVideoTrack insertTimeRange:sourceVideoTrack.timeRange ofTrack:sourceVideoTrack atTime:[composition duration] error:nil];
+//        time += CMTimeGetSeconds(sourceVideoTrack.timeRange.duration);
+//
+//
+//
+//
+//
+//    AVAssetTrack *sourceVideoTrack1 = [[resultAsset2 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+//    CGSize temp1 = CGSizeApplyAffineTransform(sourceVideoTrack1.naturalSize, sourceVideoTrack1.preferredTransform);
+//    CGSize size1 = CGSizeMake(fabs(temp1.width), fabs(temp1.height));
+//    CGAffineTransform transform1 = resultAsset2.preferredTransform;
+//
+//    float s1 = videoComposition.renderSize.height/size1.height;
+//    CGAffineTransform new1 = CGAffineTransformConcat(transform1, CGAffineTransformMakeScale(s1,s1));
+//    double val1 = (size1.width*videoComposition.renderSize.width)/size1.height;
+//    val1 = (videoComposition.renderSize.height-val1)/2;
+//    CGAffineTransform newer1 = CGAffineTransformConcat(new1, CGAffineTransformMakeTranslation(val1,0));
+//    [layerInstruction setTransform:newer1 atTime:CMTimeMakeWithSeconds(time, 30)];
+//
+//    [compositionVideoTrack insertTimeRange:sourceVideoTrack1.timeRange ofTrack:sourceVideoTrack1 atTime:[composition duration] error:nil];
+////    time += CMTimeGetSeconds(sourceVideoTrack.timeRange.duration);
+//
+//
+//
+//
+//
+//
+//
+//instruction.layerInstructions = [NSArray arrayWithObject:layerInstruction];
+//instruction.timeRange = compositionVideoTrack.timeRange;
+//videoComposition.instructions = [NSArray arrayWithObject:instruction];
 
-     dispatch_semaphore_t    semaphore1 = dispatch_semaphore_create(0);
-
-
-    [[PHImageManager defaultManager] requestAVAssetForVideo:self.asset2 options:option resultHandler:^(AVAsset * avasset, AVAudioMix * audioMix, NSDictionary * info) {
-        resultAsset2 = avasset;
-        dispatch_semaphore_signal(semaphore1);
-    }];
-   dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
-    
-    
-    NSLog(@"HELLO");
-    
-    // New code for merging two video's with different orientation;
-    
-    
+    float time = 0;
     AVMutableComposition *composition = [AVMutableComposition composition];
     AVMutableCompositionTrack *compositionVideoTrack = [composition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
     AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
     videoComposition.frameDuration = CMTimeMake(1,30);
     videoComposition.renderScale = 1.0;
-    
+    videoComposition.renderSize = CGSizeMake(_playerView.frame.size.width, _playerView.frame.size.height);
     AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
     AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:compositionVideoTrack];
     
-
-    
-    
-    float time = 0;
-    AVAssetTrack *sourceVideoTrack = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    CGSize temp = CGSizeApplyAffineTransform(sourceVideoTrack.naturalSize, sourceVideoTrack.preferredTransform);
-    CGSize size = CGSizeMake(fabs(temp.width), fabs(temp.height));
-    CGAffineTransform transform = resultAsset1.preferredTransform;
-    videoComposition.renderSize = CGSizeMake(_playerView.frame.size.width, _playerView.frame.size.height);
-
-    float s = videoComposition.renderSize.width/size.width;
-    CGAffineTransform new = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(s,s));
-    double val = (size.height*videoComposition.renderSize.width)/size.width;
-    val = (videoComposition.renderSize.height-val)/2;
-    CGAffineTransform newer = CGAffineTransformConcat(new, CGAffineTransformMakeTranslation(0,val));
-    [layerInstruction setTransform:newer atTime:CMTimeMakeWithSeconds(time, 30)];
-
-    [compositionVideoTrack insertTimeRange:sourceVideoTrack.timeRange ofTrack:sourceVideoTrack atTime:[composition duration] error:nil];
-    time += CMTimeGetSeconds(sourceVideoTrack.timeRange.duration);
-    
-  
-    
-    AVAssetTrack *sourceVideoTrack1 = [[resultAsset2 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-    CGSize temp1 = CGSizeApplyAffineTransform(sourceVideoTrack1.naturalSize, sourceVideoTrack1.preferredTransform);
-    CGSize size1 = CGSizeMake(fabs(temp1.width), fabs(temp1.height));
-    CGAffineTransform transform1 = resultAsset2.preferredTransform;
-    
-    float s1 = videoComposition.renderSize.height/size1.height;
-    CGAffineTransform new1 = CGAffineTransformConcat(transform1, CGAffineTransformMakeScale(s1,s1));
-    double val1 = (size1.width*videoComposition.renderSize.width)/size1.height;
-    val1 = (videoComposition.renderSize.height-val1)/2;
-    CGAffineTransform newer1 = CGAffineTransformConcat(new1, CGAffineTransformMakeTranslation(val1,0));
-    [layerInstruction setTransform:newer1 atTime:CMTimeMakeWithSeconds(time, 30)];
-    
-    [compositionVideoTrack insertTimeRange:sourceVideoTrack1.timeRange ofTrack:sourceVideoTrack1 atTime:[composition duration] error:nil];
-//    time += CMTimeGetSeconds(sourceVideoTrack.timeRange.duration);
-    
-    
-    
-    
-    
-    
-    
-instruction.layerInstructions = [NSArray arrayWithObject:layerInstruction];
-instruction.timeRange = compositionVideoTrack.timeRange;
-videoComposition.instructions = [NSArray arrayWithObject:instruction];
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    for(PHAsset *asset in _PhAssets )
+    {
+        dispatch_semaphore_t    semaphore = dispatch_semaphore_create(0);
+        
+        PHVideoRequestOptions *option = [PHVideoRequestOptions new];
+        
+        [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:option resultHandler:^(AVAsset * avasset, AVAudioMix * audioMix, NSDictionary * info) {
+            resultAsset1 = avasset;
+            dispatch_semaphore_signal(semaphore);
+        }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        
+        AVAssetTrack *sourceVideoTrack = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+        CGSize temp = CGSizeApplyAffineTransform(sourceVideoTrack.naturalSize, sourceVideoTrack.preferredTransform);
+        CGSize size = CGSizeMake(fabs(temp.width), fabs(temp.height));
+        
+        if(size.width>videoComposition.renderSize.width){
+            
+            CGAffineTransform transform = resultAsset1.preferredTransform;
+            float s = videoComposition.renderSize.width/size.width;
+            CGAffineTransform new = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(s,s));
+            double val = (size.height*videoComposition.renderSize.width)/size.width;
+            val = (videoComposition.renderSize.height-val)/2;
+            CGAffineTransform newer = CGAffineTransformConcat(new, CGAffineTransformMakeTranslation(0,val));
+            [layerInstruction setTransform:newer atTime:CMTimeMakeWithSeconds(time, 30)];
+            [compositionVideoTrack insertTimeRange:sourceVideoTrack.timeRange ofTrack:sourceVideoTrack atTime:[composition duration] error:nil];
+            time += CMTimeGetSeconds(sourceVideoTrack.timeRange.duration);
+        }
+        
+        else{
+            CGAffineTransform transform1 = resultAsset1.preferredTransform;
+            float s1 = videoComposition.renderSize.height/size.height;
+            CGAffineTransform new1 = CGAffineTransformConcat(transform1, CGAffineTransformMakeScale(s1,s1));
+            double val1 = (size.width*videoComposition.renderSize.width)/size.height;
+            val1 = (videoComposition.renderSize.height-val1)/2;
+            CGAffineTransform newer1 = CGAffineTransformConcat(new1, CGAffineTransformMakeTranslation(val1,0));
+            [layerInstruction setTransform:newer1 atTime:CMTimeMakeWithSeconds(time, 30)];
+            [compositionVideoTrack insertTimeRange:sourceVideoTrack.timeRange ofTrack:sourceVideoTrack atTime:[composition duration] error:nil];
+            time += CMTimeGetSeconds(sourceVideoTrack.timeRange.duration);
+        }
+        
+        
+        
+        
+    }
+    instruction.layerInstructions = [NSArray arrayWithObject:layerInstruction];
+    instruction.timeRange = compositionVideoTrack.timeRange;
+    videoComposition.instructions = [NSArray arrayWithObject:instruction];
     
     //---------End of the Process-----------
     
@@ -214,7 +264,6 @@ videoComposition.instructions = [NSArray arrayWithObject:instruction];
     NSURL *outputVideoURL=dataFilePath(@"tmpPost1.mp4"); //url of exportedVideo
     
     //that videocomposition is added to exported video composition
-    
     exportSession.videoComposition = videoComposition;
     exportSession.outputURL = outputVideoURL;
     

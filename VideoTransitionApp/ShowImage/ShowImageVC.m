@@ -24,7 +24,7 @@
     requestOptions.networkAccessAllowed = YES;
     PHImageManager *manager = [PHImageManager defaultManager];
     //    _asset = asset;
-    [manager requestImageForAsset:_asset
+    [manager requestImageForAsset:_assets
      //                           targetSize:CGSizeMake(screenBounds.size.width*screenScale*.5,screenBounds.size.height*screenScale*.5)
                        targetSize:PHImageManagerMaximumSize
                       contentMode:PHImageContentModeDefault
