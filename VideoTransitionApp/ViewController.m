@@ -119,9 +119,8 @@ int cnt=0;
     
        
        showVideoVC *vc2 = (showVideoVC *) [self.storyboard instantiateViewControllerWithIdentifier:@"showVideoVC"];
-       vc2.PhAssets=[[NSMutableArray alloc]init];
-       [vc2.PhAssets addObject:[_selectedAssets objectAtIndex:0]];
-       [vc2.PhAssets addObject:[_selectedAssets objectAtIndex:1]];
+       vc2.asset1 = [_selectedAssets objectAtIndex:0];
+       vc2.asset2 = [ _selectedAssets objectAtIndex:1];
        [_selectedAssets removeAllObjects];
        [ self.navigationController pushViewController:vc2 animated:YES];
    }
