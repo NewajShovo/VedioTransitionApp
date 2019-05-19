@@ -104,6 +104,7 @@
     CGAffineTransform newer1 = CGAffineTransformConcat(new1, CGAffineTransformMakeTranslation(0,val1));
     
     [rampLayerInstruction setTransform:newer1 atTime:CMTimeMakeWithSeconds(time, 30)];
+    [rampLayerInstruction1 setTransform:newer1 atTime:CMTimeMakeWithSeconds(time, 30)];
     
     //***Top corner left**//
     //    [rampLayerInstruction setCropRectangleRampFromStartCropRectangle:CGRectZero toEndCropRectangle:CGRectMake(0, 0, size1.width, size1.height) timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
@@ -125,13 +126,14 @@
     //**right swap**//
     //    [rampLayerInstruction setCropRectangleRampFromStartCropRectangle:CGRectMake(size1.width, 0,0,size1.height) toEndCropRectangle:CGRectMake(0, 0, size1.width, size1.height) timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
     //**up swap**//
-    //     [rampLayerInstruction setCropRectangleRampFromStartCropRectangle:CGRectMake(0, 0,size1.width,0) toEndCropRectangle:CGRectMake(0, 0, size1.width, size1.height) timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
+        [rampLayerInstruction1 setCropRectangleRampFromStartCropRectangle:CGRectMake(0, 0,size1.width,0) toEndCropRectangle:CGRectMake(0, 0, size1.width, size1.height) timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
+       [rampLayerInstruction1 setOpacityRampFromStartOpacity:0 toEndOpacity:1 timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
     
     //**down swap**//
-    //     [rampLayerInstruction setCropRectangleRampFromStartCropRectangle:CGRectMake(0, size1.height,size1.width,0) toEndCropRectangle:CGRectMake(0, 0, size1.width, size1.height) timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
-    
+    [rampLayerInstruction setCropRectangleRampFromStartCropRectangle:CGRectMake(0, size1.height,size1.width,0) toEndCropRectangle:CGRectMake(0, 0, size1.width, size1.height) timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
+    [rampLayerInstruction setOpacityRampFromStartOpacity:1 toEndOpacity:0 timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
     //**mid Swap**//
-    [rampLayerInstruction setCropRectangleRampFromStartCropRectangle:CGRectMake(size1.width/2, size1.height/2,0,0) toEndCropRectangle:CGRectMake(0, 0, size1.width, size1.height) timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
+    //[rampLayerInstruction setCropRectangleRampFromStartCropRectangle:CGRectMake(size1.width/2, size1.height/2,0,0) toEndCropRectangle:CGRectMake(0, 0, size1.width, size1.height) timeRange:CMTimeRangeMake(CMTimeMakeWithSeconds(time, 30),CMTimeMakeWithSeconds(3,NSEC_PER_SEC))];
     
     
     [compositionVideoTrack1 insertTimeRange:sourceVideoTrack1.timeRange ofTrack:sourceVideoTrack1 atTime:CMTimeMakeWithSeconds(time, 30) error:nil];
@@ -142,7 +144,7 @@
     
     ///ramplayer upore kaj korbe , layer instruction niche kaj korbe
     
-    instruction.layerInstructions = [NSArray arrayWithObjects:rampLayerInstruction,layerInstruction,nil];
+    instruction.layerInstructions = [NSArray arrayWithObjects:rampLayerInstruction1,rampLayerInstruction,layerInstruction,nil];
     instruction.timeRange = CMTimeRangeMake(kCMTimeZero,composition.duration);
     videoComposition.instructions = [NSArray arrayWithObject:instruction];
     
