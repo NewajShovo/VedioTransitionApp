@@ -133,7 +133,7 @@
             </objects>
             <point key="canvasLocation" x="-220" y="1442"/>
         </scene>
-        <!--ShowVideo-->
+        <!--Delegate-->
         <scene sceneID="Onk-tm-yWo">
             <objects>
                 <viewController storyboardIdentifier="showVideoVC" title="ShowVideo" id="JFB-7o-cEc" customClass="showVideoVC" sceneMemberID="viewController">
@@ -157,10 +157,34 @@
                                     <constraint firstAttribute="trailing" secondItem="9tZ-5S-aTq" secondAttribute="trailing" id="qIr-cH-BHw"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cY1-46-IfG" customClass="myslider">
+                                <rect key="frame" x="0.0" y="444" width="320" height="124"/>
+                                <subviews>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="gwq-eX-vp4">
+                                        <rect key="frame" x="-2" y="47" width="324" height="31"/>
+                                        <connections>
+                                            <action selector="sliderMovement:" destination="cY1-46-IfG" eventType="valueChanged" id="Itz-LZ-HD1"/>
+                                        </connections>
+                                    </slider>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="gwq-eX-vp4" firstAttribute="centerX" secondItem="cY1-46-IfG" secondAttribute="centerX" id="4b7-Yk-BI1"/>
+                                    <constraint firstItem="gwq-eX-vp4" firstAttribute="width" secondItem="cY1-46-IfG" secondAttribute="width" id="NZQ-w7-CGr"/>
+                                    <constraint firstItem="gwq-eX-vp4" firstAttribute="centerY" secondItem="cY1-46-IfG" secondAttribute="centerY" id="oy2-Ge-Xpd"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="JFB-7o-cEc" id="TbK-xt-ybv"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="53f-9A-PcU" firstAttribute="bottom" secondItem="cY1-46-IfG" secondAttribute="bottom" id="2iJ-3w-zZ2"/>
+                            <constraint firstItem="cY1-46-IfG" firstAttribute="top" secondItem="ExT-N0-ofA" secondAttribute="bottom" id="3Zy-5B-n48"/>
                             <constraint firstItem="ExT-N0-ofA" firstAttribute="centerY" secondItem="Cac-Eu-ZyV" secondAttribute="centerY" id="I8l-54-IHN"/>
+                            <constraint firstItem="cY1-46-IfG" firstAttribute="trailing" secondItem="53f-9A-PcU" secondAttribute="trailing" id="WVH-Zc-hCZ"/>
+                            <constraint firstItem="cY1-46-IfG" firstAttribute="leading" secondItem="53f-9A-PcU" secondAttribute="leading" id="ZJp-OV-coc"/>
                             <constraint firstItem="ExT-N0-ofA" firstAttribute="width" secondItem="Cac-Eu-ZyV" secondAttribute="width" id="cLf-Ku-xRg"/>
                             <constraint firstItem="ExT-N0-ofA" firstAttribute="centerX" secondItem="Cac-Eu-ZyV" secondAttribute="centerX" id="f8z-BG-D8o"/>
                         </constraints>
@@ -173,7 +197,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iix-TP-R3t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="685.60000000000002" y="1495.5022488755624"/>
+            <point key="canvasLocation" x="684.375" y="1494.7183098591549"/>
         </scene>
     </scenes>
 </document>

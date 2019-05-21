@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A007B2E82293F5CE0053FF17 /* myslider.m in Sources */ = {isa = PBXBuildFile; fileRef = A007B2E72293F5CE0053FF17 /* myslider.m */; };
 		A0FAEE4222892FC0003C05E8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAEE4122892FC0003C05E8 /* AppDelegate.m */; };
 		A0FAEE4522892FC0003C05E8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FAEE4422892FC0003C05E8 /* ViewController.m */; };
 		A0FAEE4822892FC0003C05E8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0FAEE4622892FC0003C05E8 /* Main.storyboard */; };
@@ -39,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A007B2E62293F5CE0053FF17 /* myslider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = myslider.h; sourceTree = "<group>"; };
+		A007B2E72293F5CE0053FF17 /* myslider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = myslider.m; sourceTree = "<group>"; };
 		A0FAEE3D22892FC0003C05E8 /* VideoTransitionApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoTransitionApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0FAEE4022892FC0003C05E8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A0FAEE4122892FC0003C05E8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -123,6 +126,8 @@
 				A0FAEE7B228939C2003C05E8 /* PlayerView.m */,
 				A0FAEE7222893121003C05E8 /* PhotoCellCustom */,
 				A0FAEE4622892FC0003C05E8 /* Main.storyboard */,
+				A007B2E62293F5CE0053FF17 /* myslider.h */,
+				A007B2E72293F5CE0053FF17 /* myslider.m */,
 				A0FAEE4922892FC2003C05E8 /* Assets.xcassets */,
 				A0FAEE4B22892FC2003C05E8 /* LaunchScreen.storyboard */,
 				A0FAEE4E22892FC2003C05E8 /* Info.plist */,
@@ -312,6 +317,7 @@
 				A0FAEE5022892FC2003C05E8 /* main.m in Sources */,
 				A0FAEE4222892FC0003C05E8 /* AppDelegate.m in Sources */,
 				A0FAEE8022893A1C003C05E8 /* showVideoVC.m in Sources */,
+				A007B2E82293F5CE0053FF17 /* myslider.m in Sources */,
 				A0FAEE79228933EA003C05E8 /* ShowImageVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
