@@ -87,9 +87,9 @@
 //
    // AVMutableCompositionTrack *compositionVideoTrack1 = [anotherComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
 //
-//    AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
-//    videoComposition.frameDuration = CMTimeMake(1,30);
-//    videoComposition.renderScale = 1.0;
+    AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
+    videoComposition.frameDuration = CMTimeMake(1,30);
+    videoComposition.renderScale = 1.0;
 //
 //    AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
 //    AVMutableVideoCompositionLayerInstruction *layerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:compositionVideoTrack];
@@ -199,10 +199,14 @@
 //    [_playerView.layer addAnimation:animation forKey:@"basic"];
 //
     
-    _playerItem = [AVPlayerItem playerItemWithAsset:composition];
-    _playerItem.videoComposition = [self CustomVideoComposition:composition];
-
+//    _playerItem = [AVPlayerItem playerItemWithAsset:composition];
+    AVMutableVideoComposition *temp = [self CustomVideoComposition:composition];
+    temp.renderSize=CGSizeMake(320, 320);
     
+    
+    
+    _playerItem = [AVPlayerItem playerItemWithAsset:composition];
+    _playerItem.videoComposition = temp;
     _player = [AVPlayer playerWithPlayerItem:self.playerItem];
     _playerView.player = _player;
     [self.player play];
@@ -210,6 +214,8 @@
     
 }
 - (AVMutableVideoComposition*)CustomVideoComposition:(AVMutableComposition*)composition{
+    
+    //
     CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     CIFilter *filter1 =[CIFilter filterWithName:@"CIGaussianBlur"];
     CIFilter *blend = [ CIFilter filterWithName:@"CISourceOverCompositing"];
@@ -220,29 +226,21 @@
         CIImage *source = request.sourceImage;
     
         //smaller Image
-        CIImage *backSource = request.sourceImage;
-        float scaleXY = (source.extent.size.height/source.extent.size.width);
         AVAssetTrack *sourceVideoTrack = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+        CIImage *backSource = request.sourceImage;
         CGSize temp = CGSizeApplyAffineTransform(sourceVideoTrack.naturalSize, sourceVideoTrack.preferredTransform);
         CGSize size = CGSizeMake(fabs(temp.width), fabs(temp.height));
-        float height1=temp.height-(temp.height*scaleXY);
-        CIImage *backsource = [backSource imageByApplyingTransform:CGAffineTransformMakeScale(1,scaleXY)];
-        backsource = [ backsource imageByApplyingTransform:CGAffineTransformMakeTranslation(0, height1/2)];
+        CGAffineTransform transform = resultAsset1.preferredTransform;
+        //            videoComposition.renderSize = CGSizeMake(_playerView.frame.size.width, _playerView.frame.size.height);
         
+        float s = 320/size.width;
+        CGAffineTransform new = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(s,s));
+        double val = (size.height*320)/size.width;
+        val = (320-val)/2;
+        CIImage *backsource = [backSource imageByApplyingTransform:CGAffineTransformMakeScale(s,s)];
+        backsource = [ backsource imageByApplyingTransform:CGAffineTransformMakeTranslation(0, val)];
         
-        //Background Image
-//        [source ]
-        
-//
-        
-        
-//         [blend setValue:@(0.0) forKey:kCIInputRadiusKey];
-        
-//        ble
-        
-//         CIFilter *blend = [ CIFilter filterWithName:@"CIBlendWithMask" keysAndValues:kCIInputImageKey,backsource,source, nil];
-//
-//        CIImage *outputImage = [ blend outputImage];
+
 
         [filter1 setValue:source forKey:kCIInputImageKey];
         [filter setValue:backsource forKey:kCIInputImageKey];
@@ -250,9 +248,9 @@
         
         // Vary filter parameters based on video timing
      
-Float64 seconds = CMTimeGetSeconds(request.compositionTime);
+        Float64 seconds = CMTimeGetSeconds(request.compositionTime);
         [filter setValue:@(0.0) forKey:kCIInputRadiusKey];
-        [filter1 setValue:@(50.0) forKey:kCIInputRadiusKey];
+        [filter1 setValue:@(10.0) forKey:kCIInputRadiusKey];
   
         [blend setValue:filter1.outputImage forKey:kCIInputBackgroundImageKey];
         [blend setValue:filter.outputImage forKey:kCIInputImageKey];
