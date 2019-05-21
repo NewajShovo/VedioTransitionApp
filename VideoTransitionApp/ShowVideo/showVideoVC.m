@@ -24,7 +24,7 @@
 
 @implementation showVideoVC
 {
-    CGAffineTransform newer1,newer;
+//    CGAffineTransform newer1,newer;
     NSURL *temporary;
     AVMutableComposition *mainComposition;
     AVAsset *resultAsset1;
@@ -104,7 +104,7 @@
 //
 //
 //    float time = 0;
-   AVAssetTrack *sourceVideoTrack = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+ AVAssetTrack *sourceVideoTrack = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
 //    CGSize temp = CGSizeApplyAffineTransform(sourceVideoTrack.naturalSize, sourceVideoTrack.preferredTransform);
 //    CGSize size = CGSizeMake(fabs(temp.width), fabs(temp.height));
 //    CGAffineTransform transform = resultAsset1.preferredTransform;
@@ -224,23 +224,48 @@
     
         //Background Image
         CIImage *source = request.sourceImage;
-    
+        CIImage *backsource=request.sourceImage;
+       
         //smaller Image
+        //** landscape Mode **//
+        
         AVAssetTrack *sourceVideoTrack = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-        CIImage *backSource = request.sourceImage;
+        
         CGSize temp = CGSizeApplyAffineTransform(sourceVideoTrack.naturalSize, sourceVideoTrack.preferredTransform);
         CGSize size = CGSizeMake(fabs(temp.width), fabs(temp.height));
+        if(size.width>size.height){
         CGAffineTransform transform = resultAsset1.preferredTransform;
-        //            videoComposition.renderSize = CGSizeMake(_playerView.frame.size.width, _playerView.frame.size.height);
-        
         float s = 320/size.width;
         CGAffineTransform new = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(s,s));
         double val = (size.height*320)/size.width;
         val = (320-val)/2;
-        CIImage *backsource = [backSource imageByApplyingTransform:CGAffineTransformMakeScale(s,s)];
-        backsource = [ backsource imageByApplyingTransform:CGAffineTransformMakeTranslation(0, val)];
-        
+        CGAffineTransform newer = CGAffineTransformConcat(new, CGAffineTransformMakeTranslation(0,val));
+        backsource = [backsource imageByApplyingTransform:newer];
+        }
+        ///*** Potrait Mode ***///
+        else{
+            AVAssetTrack *sourceVideoTrack1 = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+            CGSize temp1 = CGSizeApplyAffineTransform(sourceVideoTrack1.naturalSize, sourceVideoTrack1.preferredTransform);
+            CGSize size1 = CGSizeMake(fabs(temp1.width), fabs(temp1.height));
+            CGAffineTransform transform1 = resultAsset1.preferredTransform;
 
+            float s1 = 320/size1.height;
+            CGAffineTransform new1 = CGAffineTransformConcat(transform1, CGAffineTransformMakeScale(s1,s1));
+            double val1 = size1.width*((320)/size1.height);
+            val1 = (320-val1)/2;
+            CGAffineTransform newer1 = CGAffineTransformConcat(new1, CGAffineTransformMakeTranslation(val1,0));
+            backsource = [backsource imageByApplyingTransform:newer1];
+        
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         [filter1 setValue:source forKey:kCIInputImageKey];
         [filter setValue:backsource forKey:kCIInputImageKey];

@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoTransitionApp/ShowVideo/showVideoVC.m"
-            timestampString = "580114460.289517"
+            timestampString = "580120839.723991"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "254"
-            endingLineNumber = "254"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
             landmarkName = "-CustomVideoComposition:"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoTransitionApp/ShowVideo/showVideoVC.m"
-            timestampString = "580114460.290489"
+            timestampString = "580120839.725067"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
             landmarkName = "-CustomVideoComposition:"
             landmarkType = "7">
          </BreakpointContent>
