@@ -143,9 +143,18 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ExT-N0-ofA" customClass="PlayerView">
                                 <rect key="frame" x="0.0" y="124" width="320" height="320"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9tZ-5S-aTq">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                                    </imageView>
+                                </subviews>
                                 <color key="backgroundColor" red="0.39827257989999998" green="1" blue="0.33253774860000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ExT-N0-ofA" secondAttribute="height" multiplier="1:1" id="8xk-xK-otY"/>
+                                    <constraint firstItem="9tZ-5S-aTq" firstAttribute="leading" secondItem="ExT-N0-ofA" secondAttribute="leading" id="Jtc-o9-fnG"/>
+                                    <constraint firstAttribute="bottom" secondItem="9tZ-5S-aTq" secondAttribute="bottom" id="MG0-sC-Szy"/>
+                                    <constraint firstItem="9tZ-5S-aTq" firstAttribute="top" secondItem="ExT-N0-ofA" secondAttribute="top" id="hkq-in-N0M"/>
+                                    <constraint firstAttribute="trailing" secondItem="9tZ-5S-aTq" secondAttribute="trailing" id="qIr-cH-BHw"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -158,6 +167,7 @@
                         <viewLayoutGuide key="safeArea" id="53f-9A-PcU"/>
                     </view>
                     <connections>
+                        <outlet property="Image" destination="9tZ-5S-aTq" id="8Vy-ZQ-uK0"/>
                         <outlet property="playerView" destination="ExT-N0-ofA" id="67v-bI-s6K"/>
                     </connections>
                 </viewController>
