@@ -13,10 +13,7 @@
 - (IBAction)sliderMovement:(id)sender {
     UISlider *slider = (UISlider*)sender;
     [self.delegate mysliderValue:slider.value];
-  NSLog(@"YES");
-
-
-
+    
 }
 
 

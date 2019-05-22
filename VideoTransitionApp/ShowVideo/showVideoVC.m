@@ -32,6 +32,8 @@
     AVAsset *resultAsset2;
     AVAsset *exportedVideo;
     AVVideoComposition *composition1;
+    float canvasHeight;
+    float canvasWidth;
 
 }
 
@@ -41,8 +43,8 @@
     [super viewDidLoad];
     
     
-//    myslider *vc = [[myslider alloc] init];
-//    vc.delegate = self;
+    myslider *vc = [[myslider alloc] init];
+    vc.delegate = self;
     // Do any additional setup after loading the view.
     dispatch_semaphore_t    semaphore = dispatch_semaphore_create(0);
     
@@ -62,9 +64,19 @@
         resultAsset2 = avasset;
         dispatch_semaphore_signal(semaphore1);
     }];
- dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(semaphore1, DISPATCH_TIME_FOREVER);
+    
+    //Canvas Heigt Width set
+    
+    canvasHeight =_playerView.frame.size.height;
+    canvasWidth = _playerView.frame.size.width;
+    
     
     [self play];
+    
+    
+    
+    
     
 }
 -(void) play{
@@ -107,46 +119,46 @@
         
         CGSize temp = CGSizeApplyAffineTransform(sourceVideoTrack.naturalSize, sourceVideoTrack.preferredTransform);
         CGSize size = CGSizeMake(fabs(temp.width), fabs(temp.height));
-        if(size.width>size.height){
         CGAffineTransform transform = resultAsset1.preferredTransform;
-        float s = 320/size.width;
+        if(size.width>size.height){
+        float s = canvasWidth/size.width;
         CGAffineTransform new = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(s,s));
-        double val = (size.height*320)/size.width;
-        val = (320-val)/2;
+        double val = (size.height*canvasHeight)/size.width;
+        val = (canvasHeight-val)/2;
         CGAffineTransform newer = CGAffineTransformConcat(new, CGAffineTransformMakeTranslation(0,val));
         backsource = [backsource imageByApplyingTransform:newer];
         }
         ///*** Potrait Mode ***///
         else{
-            AVAssetTrack *sourceVideoTrack1 = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-            CGSize temp1 = CGSizeApplyAffineTransform(sourceVideoTrack1.naturalSize, sourceVideoTrack1.preferredTransform);
-            CGSize size1 = CGSizeMake(fabs(temp1.width), fabs(temp1.height));
             CGAffineTransform transform1 = resultAsset1.preferredTransform;
 
-            float s1 = 320/size1.height;
+            float s1 = canvasHeight/size.height;
             CGAffineTransform new1 = CGAffineTransformConcat(transform1, CGAffineTransformMakeScale(s1,s1));
-            double val1 = size1.width*((320)/size1.height);
+            double val1 = size.width*(canvasWidth/size.height);
             val1 = (320-val1)/2;
             CGAffineTransform newer1 = CGAffineTransformConcat(new1, CGAffineTransformMakeTranslation(val1,0));
             backsource = [backsource imageByApplyingTransform:newer1];
         
         }
         
-          
-
-        [filter1 setValue:source forKey:kCIInputImageKey];
-        [filter setValue:backsource forKey:kCIInputImageKey];
         
+//        source=[source imageByApplyingTransform:C]
+        
+      CGAffineTransform tempSource = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(canvasWidth/source.extent.size.width,canvasHeight/source.extent.size.height));
+        source =[source imageByApplyingTransform:tempSource];
+
+       [filter1 setValue:source forKey:kCIInputImageKey];
+       [filter setValue:backsource forKey:kCIInputImageKey];
+        source =filter1.outputImage;
         
         // Vary filter parameters based on video timing
      
         Float64 seconds = CMTimeGetSeconds(request.compositionTime);
         [filter setValue:@(0.0) forKey:kCIInputRadiusKey];
         [filter1 setValue:@(5.0) forKey:kCIInputRadiusKey];
-  
+
         [blend setValue:filter1.outputImage forKey:kCIInputBackgroundImageKey];
         [blend setValue:filter.outputImage forKey:kCIInputImageKey];
-//        [blend setValue:@(0.0) forKey:kCIInputImageKey];
         
         // Provide the filter output to the composition
         [request finishWithImage:blend.outputImage context:nil];
@@ -174,6 +186,8 @@ NSURL * dataFilePath(NSString *path){
 }
 -(void) mysliderValue:(CGFloat)value
 {
+    
+    NSLog(@"%f",value);
     
     NSLog(@"YESSS");
     
