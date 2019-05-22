@@ -10,8 +10,11 @@
 #import "ShowVideo/showVideoVC.h"
 
 @implementation myslider
+
+
+
 - (IBAction)sliderMovement:(id)sender {
-    UISlider *slider = (UISlider*)sender;
+   UISlider *slider = (UISlider*)sender;
     [self.delegate mysliderValue:slider.value];
     
 }

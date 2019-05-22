@@ -34,17 +34,16 @@
     AVVideoComposition *composition1;
     float canvasHeight;
     float canvasWidth;
-
+    float permanentCanvasHeight;
+    float permanentCanvasWidth;
+    float additionalValue;
 }
 
 
 - (void)viewDidLoad {
 //    [self logAllFilters];
     [super viewDidLoad];
-    
-    
-    myslider *vc = [[myslider alloc] init];
-    vc.delegate = self;
+    [_mySlider setValue:_mySlider.maximumValue/2];
     // Do any additional setup after loading the view.
     dispatch_semaphore_t    semaphore = dispatch_semaphore_create(0);
     
@@ -88,8 +87,10 @@
     AVAssetTrack *sourceVideoTrack = [[resultAsset1 tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
     [compositionVideoTrack insertTimeRange:sourceVideoTrack.timeRange ofTrack:sourceVideoTrack atTime:[composition duration] error:nil];
     
+    permanentCanvasHeight= canvasHeight;
+    permanentCanvasWidth = canvasWidth;
     AVMutableVideoComposition *temp = [self CustomVideoComposition:composition];
-    temp.renderSize=CGSizeMake(320, 320);
+    temp.renderSize=CGSizeMake(permanentCanvasWidth, permanentCanvasHeight);
     
     
     
@@ -111,7 +112,7 @@
         //Background Image
         CIImage *source = request.sourceImage;
         CIImage *backsource=request.sourceImage;
-       
+        NSLog(@"---%f %f----",canvasWidth,canvasHeight);
         //smaller Image
         //** landscape Mode **//
         
@@ -121,22 +122,33 @@
         CGSize size = CGSizeMake(fabs(temp.width), fabs(temp.height));
         CGAffineTransform transform = resultAsset1.preferredTransform;
         if(size.width>size.height){
-        float s = canvasWidth/size.width;
-        CGAffineTransform new = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(s,s));
-        double val = (size.height*canvasHeight)/size.width;
-        val = (canvasHeight-val)/2;
-        CGAffineTransform newer = CGAffineTransformConcat(new, CGAffineTransformMakeTranslation(0,val));
-        backsource = [backsource imageByApplyingTransform:newer];
+            float s = canvasWidth/size.width;
+            CGAffineTransform new = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(s,s));
+            double changedHeight = (size.height*canvasHeight)/size.width;
+            double changedWidth =  (size.width *canvasWidth)/size.width;
+            changedWidth=(permanentCanvasWidth-canvasWidth)/2;
+            changedHeight = (permanentCanvasHeight-changedHeight)/2;
+        
+            
+            CGAffineTransform newer = CGAffineTransformConcat(new, CGAffineTransformMakeTranslation(changedWidth,changedHeight));
+            backsource = [backsource imageByApplyingTransform:newer];
         }
+        
+        
         ///*** Potrait Mode ***///
         else{
             CGAffineTransform transform1 = resultAsset1.preferredTransform;
 
             float s1 = canvasHeight/size.height;
             CGAffineTransform new1 = CGAffineTransformConcat(transform1, CGAffineTransformMakeScale(s1,s1));
-            double val1 = size.width*(canvasWidth/size.height);
-            val1 = (320-val1)/2;
-            CGAffineTransform newer1 = CGAffineTransformConcat(new1, CGAffineTransformMakeTranslation(val1,0));
+            double changedWidth = size.width*(canvasWidth/size.height);
+            double changedHeight =size.height*(canvasHeight/size.height);
+            changedWidth = (permanentCanvasWidth-changedWidth);
+            changedHeight=(permanentCanvasHeight-changedHeight);
+            
+            changedHeight =changedHeight/2;
+            changedWidth = changedWidth/2;
+            CGAffineTransform newer1 = CGAffineTransformConcat(new1, CGAffineTransformMakeTranslation(changedWidth,changedHeight));
             backsource = [backsource imageByApplyingTransform:newer1];
         
         }
@@ -144,11 +156,11 @@
         
 //        source=[source imageByApplyingTransform:C]
         
-      CGAffineTransform tempSource = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(canvasWidth/source.extent.size.width,canvasHeight/source.extent.size.height));
+        CGAffineTransform tempSource = CGAffineTransformConcat(transform, CGAffineTransformMakeScale(permanentCanvasWidth/source.extent.size.width,permanentCanvasHeight/source.extent.size.height));
         source =[source imageByApplyingTransform:tempSource];
-
-       [filter1 setValue:source forKey:kCIInputImageKey];
-       [filter setValue:backsource forKey:kCIInputImageKey];
+        
+        [filter1 setValue:source forKey:kCIInputImageKey];
+        [filter setValue:backsource forKey:kCIInputImageKey];
         source =filter1.outputImage;
         
         // Vary filter parameters based on video timing
@@ -184,14 +196,37 @@ NSURL * dataFilePath(NSString *path){
     return [NSURL fileURLWithPath:outputPath];
     
 }
--(void) mysliderValue:(CGFloat)value
-{
+- (IBAction)mysliderVlaue:(id)sender {
+
+    UISlider *slider = (UISlider *) sender;
+    CGFloat value =slider.value;
+    if(floorf(value)>=_mySlider.maximumValue/2){
+        
+    canvasWidth=permanentCanvasWidth+(((floorf(value)-(_mySlider.maximumValue/2)))*10);
+    canvasHeight=permanentCanvasHeight+((( floorf(value)-(_mySlider.maximumValue/2)))*10);
+    NSLog(@"----%f  %f----",canvasWidth,canvasHeight);
+//    NSLog(@"----%f  %f----",changedHeight,changedWidth);
     
-    NSLog(@"%f",value);
-    
-    NSLog(@"YESSS");
-    
+    }
+    else{
+        canvasWidth=permanentCanvasWidth-(((_mySlider.maximumValue/2)-floorf(value))*10);
+        canvasHeight=permanentCanvasHeight-(((_mySlider.maximumValue/2)-floorf(value))*10);
+    }
+
 }
+//-(void) mysliderValue:(CGFloat)value
+//{
+//
+//   canvasWidth=permanentCanvasWidth-(floorf(value)*3);
+//   canvasHeight=permanentCanvasHeight-(floorf(value)*3);
+////    additionalValue =floorf(value);
+//
+//
+//    NSLog(@"%f", floorf(value));
+//    NSLog(@"%f",value);
+//    NSLog(@"YESSS");
+//
+//}
 /*
  #pragma mark - Navigation
  

@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) PHAsset *asset1;
 @property (nonatomic) PHAsset *asset2;
 @property (nonatomic,strong) NSMutableArray *PhAssets;
+@property (strong, nonatomic) IBOutlet UISlider *mySlider;
+
 @end
 
 NS_ASSUME_NONNULL_END

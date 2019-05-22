@@ -133,7 +133,7 @@
             </objects>
             <point key="canvasLocation" x="-220" y="1442"/>
         </scene>
-        <!--Delegate-->
+        <!--ShowVideo-->
         <scene sceneID="Onk-tm-yWo">
             <objects>
                 <viewController storyboardIdentifier="showVideoVC" title="ShowVideo" id="JFB-7o-cEc" customClass="showVideoVC" sceneMemberID="viewController">
@@ -157,25 +157,30 @@
                                     <constraint firstAttribute="trailing" secondItem="9tZ-5S-aTq" secondAttribute="trailing" id="qIr-cH-BHw"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cY1-46-IfG" customClass="myslider">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cY1-46-IfG">
                                 <rect key="frame" x="0.0" y="444" width="320" height="124"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="100" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="gwq-eX-vp4">
-                                        <rect key="frame" x="-2" y="47" width="324" height="31"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="gwq-eX-vp4">
+                                        <rect key="frame" x="38" y="47" width="244" height="31"/>
                                         <connections>
-                                            <action selector="sliderMovement:" destination="cY1-46-IfG" eventType="valueChanged" id="Itz-LZ-HD1"/>
+                                            <action selector="mysliderVlaue:" destination="JFB-7o-cEc" eventType="valueChanged" id="bQn-31-wHv"/>
                                         </connections>
                                     </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NzL-CN-8FA">
+                                        <rect key="frame" x="139" y="51.5" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="gwq-eX-vp4" firstAttribute="centerX" secondItem="cY1-46-IfG" secondAttribute="centerX" id="4b7-Yk-BI1"/>
-                                    <constraint firstItem="gwq-eX-vp4" firstAttribute="width" secondItem="cY1-46-IfG" secondAttribute="width" id="NZQ-w7-CGr"/>
+                                    <constraint firstItem="NzL-CN-8FA" firstAttribute="centerY" secondItem="cY1-46-IfG" secondAttribute="centerY" id="AFe-tQ-j2m"/>
+                                    <constraint firstItem="gwq-eX-vp4" firstAttribute="width" secondItem="cY1-46-IfG" secondAttribute="width" multiplier="0.75" id="NZQ-w7-CGr"/>
+                                    <constraint firstItem="NzL-CN-8FA" firstAttribute="centerX" secondItem="cY1-46-IfG" secondAttribute="centerX" id="Nkf-2g-HO8"/>
                                     <constraint firstItem="gwq-eX-vp4" firstAttribute="centerY" secondItem="cY1-46-IfG" secondAttribute="centerY" id="oy2-Ge-Xpd"/>
                                 </constraints>
-                                <connections>
-                                    <outlet property="delegate" destination="JFB-7o-cEc" id="TbK-xt-ybv"/>
-                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -192,6 +197,7 @@
                     </view>
                     <connections>
                         <outlet property="Image" destination="9tZ-5S-aTq" id="8Vy-ZQ-uK0"/>
+                        <outlet property="mySlider" destination="gwq-eX-vp4" id="7hT-1c-ljd"/>
                         <outlet property="playerView" destination="ExT-N0-ofA" id="67v-bI-s6K"/>
                     </connections>
                 </viewController>
